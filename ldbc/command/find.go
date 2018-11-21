@@ -2,7 +2,6 @@ package command
 
 import (
 	"errors"
-	"flag"
 	"github.com/syndtr/goleveldb/leveldb"
 	"github.com/syndtr/goleveldb/leveldb/util"
 	"io"
@@ -91,19 +90,4 @@ func (r *Find) getFilter() (*util.Range, error) {
 		filter = &util.Range{Start: start, Limit: limit}
 	}
 	return filter, nil
-}
-
-func (r *Find) Parse(args []string) error {
-	sliced := args[3:]
-	options := flag.NewFlagSet("", flag.ExitOnError)
-	options.StringVar(&r.Out, "out", stdout, "output file")
-	options.StringVar(&r.Format, "file-format", json, "output format")
-	options.StringVar(&r.KeyFormat, "key-format", "raw", "key format")
-	options.StringVar(&r.ValueFormat, "value-format", "base64", "value format")
-	options.StringVar(&r.KeyPrefix, param_keyPrefix, "", "filter by key")
-	options.StringVar(&r.KeyFrom, param_keyFrom, "", "strict result by first included key")
-	options.StringVar(&r.KeyTo, "key-to", "", "strict result by last excluded key")
-
-	e := options.Parse(sliced)
-	return e
 }

@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"errors"
 	"io"
+	"log"
 )
 
 type JsonWriter struct {
@@ -56,7 +57,9 @@ func NewJsonWriter(out io.Writer, keyFormat string, valueFormat string) (*JsonWr
 }
 
 func (w *JsonWriter) Write(key []byte, value []byte) error {
-	if w.count > 0 {
+	if w.count == 0 {
+		w.writeStr("[\n")
+	} else {
 		w.writeStr(",\n")
 	}
 	w.writeStr("{\"key\":\"" + w.keyConverter(key) + "\",\"value\":\"" + w.valueConverter(value) + "\"}")
@@ -68,8 +71,11 @@ func (w *JsonWriter) writeStr(s string) (int, error) {
 	return w.out.Write([]byte(s))
 }
 func (w *JsonWriter) Start() {
-	(*w).writeStr("[\n")
 }
 func (w *JsonWriter) End() {
-	(*w).writeStr("\n]")
+	if w.count > 0 {
+		(*w).writeStr("\n]")
+	} else {
+		log.Println("nothing found")
+	}
 }
