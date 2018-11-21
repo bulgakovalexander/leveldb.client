@@ -30,7 +30,6 @@ func New() *LevelDbApp {
 	levelDbCmdLine := &LevelDbApp{App: cli.NewApp(), dbPath: "", db: nil}
 	levelDbCmdLine.Version = version
 	levelDbCmdLine.Usage = "LevelDB command line client"
-	//levelDbCmdLine.UsageText = levelDbCmdLine.HelpName + " dbPath command [command options]"
 	levelDbCmdLine.Flags = []cli.Flag{
 		cli.StringFlag{
 			Name:        "db",
