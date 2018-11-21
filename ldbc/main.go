@@ -9,6 +9,17 @@ import (
 	"os"
 )
 
+const version = "0.0.0.1"
+
+func main() {
+	app := New()
+
+	err := app.Run(os.Args)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
 type LevelDbApp struct {
 	*cli.App
 	dbPath string
@@ -17,6 +28,7 @@ type LevelDbApp struct {
 
 func New() *LevelDbApp {
 	levelDbCmdLine := &LevelDbApp{App: cli.NewApp(), dbPath: "", db: nil}
+	levelDbCmdLine.Version = version
 	levelDbCmdLine.Usage = "LevelDB command line client"
 	//levelDbCmdLine.UsageText = levelDbCmdLine.HelpName + " dbPath command [command options]"
 	levelDbCmdLine.Flags = []cli.Flag{
@@ -34,15 +46,6 @@ func New() *LevelDbApp {
 func (app *LevelDbApp) Run(args []string) error {
 	err := app.App.Run(args)
 	return err
-}
-
-func main() {
-	app := New()
-
-	err := app.Run(os.Args)
-	if err != nil {
-		log.Fatal(err)
-	}
 }
 
 func newFind(dbPath *string) cli.Command {
